@@ -32,7 +32,11 @@ declare const Bun: { env: Record<string, string> };
 // deno-lint-ignore no-explicit-any
 declare const require: (module: string) => any;
 //shims Node.js process object
-declare const process: { env: Record<string, string> };
+declare const process: {
+    // deno-lint-ignore no-explicit-any
+    versions: any;
+    env: Record<string, string>;
+};
 
 // Flags to control behavior (initialized with defaults)
 let throwErrors = false;
@@ -43,7 +47,10 @@ function getCurrentRuntime(): Runtimes {
         return Runtimes.Deno;
     } else if (typeof Bun === "object") {
         return Runtimes.Bun;
-    } else if (typeof process === "object" && typeof require === "function") {
+    } else if (
+        typeof process === "object" && typeof process.versions !== "undefined" &&
+        typeof process.versions.node !== "undefined"
+    ) {
         return Runtimes.Node;
     } else {
         return Runtimes.Unsupported;

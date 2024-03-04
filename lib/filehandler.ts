@@ -56,12 +56,8 @@ export async function loadEnvFile(
                 fileContent = await Bun.file(filePath).text();
                 break;
             case Runtimes.Node: {
-                if (typeof fs === "undefined") {
-                    const fs = require("fs");
-                    fileContent = fs.readFileSync(filePath, "utf-8");
-                } else {
-                    throw new Error("Node.js 'fs' module is not available in this environment.");
-                }
+                const fs = await import("node:fs");
+                fileContent = fs.readFileSync(filePath, "utf-8");
                 break;
             }
             default:
