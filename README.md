@@ -1,9 +1,12 @@
-## **Flexible Environment Variable Management for Deno, Bun, and Node.js**
+## Cross-runtime environment variable management for Deno, Bun, and Node.js
+
+[![JSR Version](https://jsr.io/badges/@cross/env)](https://jsr.io/@cross/env)
+[![JSR Score](https://jsr.io/badges/@cross/env/score)](https://jsr.io/@cross/env/score)
 
 This library provides a consistent and simple interface for managing environment variables across multiple runtimes,
 making it ideal for cross-platform development.
 
-## **Features**
+## Features
 
 - **Cross-runtime support:** Works seamlessly within Deno, Bun, and Node.js environments.
 - **Get and Set environment variables:** Retrieve and Modify environment variables in a consistent interface across
@@ -12,7 +15,7 @@ making it ideal for cross-platform development.
 - **Error handling:** Provides clear error messages for unsupported runtimes or validation failures.
 - **Optional environmental file loading:** Supports loading variables from custom .env files _(experimental)_
 
-## **Installation**
+## Installation
 
 ```bash
 #For Deno
@@ -94,7 +97,7 @@ function isPositiveNumber(value: string): boolean {
 const timeout = validateAndGetEnv("TIMEOUT", isPositiveNumber);
 ```
 
-## **Configuration (optional):**
+## Configuration (optional)
 
 For more advanced use cases you can configure the behaviour of the library. The library defaults to showing console
 warnings but not throwing errors.

@@ -12,6 +12,7 @@ import {
     ValidatorFunction,
 } from "./lib/helpers.ts";
 import { loadEnvFile } from "./lib/filehandler.ts";
+export { FileReadError, UnsupportedEnvironmentError, ValidationError } from "./lib/helpers.ts";
 export type { ValidatorFunction } from "./lib/helpers.ts";
 
 /**

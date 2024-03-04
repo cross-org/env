@@ -1,7 +1,9 @@
 {
     "tasks": {
-        "publish": "deno publish --config jsr.json"
+        "test": "deno test --allow-env ./tests/deno.ts",
+        "publish": "deno publish --config jsr.jsonc"
     },
+    "lock": false,
     "fmt": {
         "lineWidth": 120,
         "indentWidth": 4
