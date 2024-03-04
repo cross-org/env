@@ -1,0 +1,9 @@
+{
+    "tasks": {
+        "publish": "deno publish --config jsr.json"
+    },
+    "fmt": {
+        "lineWidth": 120,
+        "indentWidth": 4
+    }
+}
