@@ -12,8 +12,7 @@ import {
     ValidatorFunction,
 } from "./lib/helpers.ts";
 import { loadEnvFile } from "./lib/filehandler.ts";
-export { FileReadError, UnsupportedEnvironmentError, ValidationError } from "./lib/helpers.ts";
-export type { ValidatorFunction } from "./lib/helpers.ts";
+export type { EnvOptions, ValidatorFunction } from "./lib/helpers.ts";
 
 /**
  * Various shims/type-stubs, declared for development/IDE purposes
@@ -28,9 +27,6 @@ declare const Deno: {
 };
 //shims the Bun runtime
 declare const Bun: { env: Record<string, string> };
-//shims Node.js function to load modules
-// deno-lint-ignore no-explicit-any
-declare const require: (module: string) => any;
 //shims Node.js process object
 declare const process: {
     // deno-lint-ignore no-explicit-any

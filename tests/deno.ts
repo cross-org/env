@@ -1,5 +1,5 @@
 import { assert, assertEquals, assertThrows } from "https://deno.land/std@0.218.2/assert/mod.ts";
-
+import { ValidationError } from "../lib/helpers.ts";
 import {
     getAllEnv,
     getEnv,
@@ -8,7 +8,6 @@ import {
     setupEnv,
     validateAndGetEnv,
     validateEnv,
-    ValidationError,
     ValidatorFunction,
 } from "../mod.ts";
 

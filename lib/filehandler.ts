@@ -16,17 +16,6 @@ declare const Bun: {
     env: Record<string, string>;
 };
 
-//Simulates/shims Node.js function to load modules for development purposes.
-// deno-lint-ignore no-explicit-any
-declare const require: (module: string) => any;
-
-//Simulates/shims Node.js process object for development purposes.
-declare const process: { env: Record<string, string> };
-
-//Simulates/shims the Node.js fs namespace for development purposes.
-// deno-lint-ignore no-explicit-any
-declare const fs: any;
-
 /**
  * Loads environment variables from a .env file, handling file existence,
  * runtime differences, and errors.
