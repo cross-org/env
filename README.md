@@ -104,17 +104,33 @@ warnings but not throwing errors.
 
 ```javascript
 await setupEnv({
-    throwErrors: true, // Throw errors in unsupported runtimes
-    logWarnings: false, // Disable warnings
-    loadDotEnv: true, // Load from a .env file (experimental)
-    dotEnvFile: ".env.local", // Specify an alternate .env file (experimental)
+    throwErrors: true,
+    logWarnings: false,
+    dotEnv: {
+        enabled: true,
+        path: ".env.local",
+        allowQuotes: true,
+        enableExpansion: true,
+    },
 });
 ```
 
-**Experimental .env File Support**
+**Supported `.env` File Features**
 
-Use the `loadDotEnv` parameter and optionally `dotEnvFile` in `setupEnv()` to automatically load environment variables
-from a .env file. Currently, this feature might have runtime-specific limitations.
+- **Basic Variable Definitions:** Define variables using the `KEY=VALUE` format.
+- **Variable Expansion:** Use variables within other variables (`$VARIABLE_NAME`).
+- **Nested Expansion:** Expand variables that reference other variables.
+- **Quotes:** Enclose values with spaces using single or double quotes.
+- **Escaping:** Prevent expansion with a backslash (`\$VARIABLE_NAME`).
+
+**Example `.env` file:**
+
+```
+MYAPP_DATABASE_HOST=my-database-server
+MYAPP_DATABASE_URL=jdbc:mysql://$MYAPP_DATABASE_HOST:3306/my_schema
+MYAPP_MESSAGE="Hello, world!"
+MYAPP_NOT_EXPAND=Test\$MYAPP_MESSAGE
+```
 
 ## Issues
 

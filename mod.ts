@@ -5,6 +5,7 @@
  */
 
 import {
+    deepMerge,
     EnvOptions,
     Runtimes,
     UnsupportedEnvironmentError,
@@ -34,9 +35,20 @@ declare const process: {
     env: Record<string, string>;
 };
 
-// Flags to control behavior (initialized with defaults)
-let throwErrors = false;
-let logWarnings = true;
+const defaultOptions: EnvOptions = {
+    throwErrors: false, // Errors are not thrown by default
+    logWarnings: true, // Warnings are logged to the console by default
+    dotEnv: {
+        enabled: true, // .env file loading enabled by default
+        path: ".env", // Standard .env file location
+        allowQuotes: true, // Allow quotes by default
+        enableExpansion: true, // Enable variable expansion by default
+    },
+};
+
+// Flags to control lib behavior (initialized with defaults)
+let throwErrors = defaultOptions.throwErrors;
+let logWarnings = defaultOptions.logWarnings;
 
 function getCurrentRuntime(): Runtimes {
     if (typeof Deno === "object") {
@@ -60,13 +72,14 @@ function getCurrentRuntime(): Runtimes {
  */
 export async function setupEnv(options?: EnvOptions) {
     if (options) {
-        throwErrors = options.throwErrors ?? false;
-        logWarnings = options.logWarnings ?? true;
+        const mergedOptions = deepMerge({}, defaultOptions, options);
 
-        if (options.loadDotEnv) {
+        throwErrors = mergedOptions.throwErrors!;
+        logWarnings = mergedOptions.logWarnings!;
+
+        if (mergedOptions.dotEnv) {
             const currentRuntime = getCurrentRuntime();
-            const envFile = options.dotEnvFile ? options.dotEnvFile : undefined;
-            const envVars = await loadEnvFile(currentRuntime, envFile, throwErrors, logWarnings);
+            const envVars = await loadEnvFile(currentRuntime, mergedOptions);
 
             switch (currentRuntime) {
                 case Runtimes.Deno:
