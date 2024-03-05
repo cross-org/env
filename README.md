@@ -126,10 +126,29 @@ await setupEnv({
 **Example `.env` file:**
 
 ```
+# .env-local
 MYAPP_DATABASE_HOST=my-database-server
 MYAPP_DATABASE_URL=jdbc:mysql://$MYAPP_DATABASE_HOST:3306/my_schema
-MYAPP_MESSAGE="Hello, world!"
-MYAPP_NOT_EXPAND=Test\$MYAPP_MESSAGE
+MYAPP_APP_CONFIG_PATH="config/$MYAPP_DATABASE_URL.properties"
+MYAPP_WEB_SERVER_URL=https://$MYAPP_APP_CONFIG_PATH/app 
+```
+Example code to read above `.env-local`-file and console.logging all environmental variables
+prefixed with `MYAPP_`
+
+```javascript
+import { getAllEnv, setupEnv } from "@cross/env";
+
+await setupEnv({ dotEnv: { enabled: true, path: ".env-local" } });
+const allVariables = getAllEnv("MYAPP_");
+
+console.log(allVariables);
+// Output of expanded variables ->
+// {
+//     MYAPP_DATABASE_HOST: "my-database-server",
+//     MYAPP_WEB_SERVER_URL: "https://config/jdbc:mysql://my-database-server:3306/my_schema.properties/app",
+//     MYAPP_DATABASE_URL: "jdbc:mysql://my-database-server:3306/my_schema",
+//     MYAPP_APP_CONFIG_PATH: "config/jdbc:mysql://my-database-server:3306/my_schema.properties"
+// }
 ```
 
 ## Issues
