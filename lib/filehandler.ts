@@ -70,7 +70,7 @@ export async function loadEnvFile(
             console.warn(err.message);
         }
     }
-    console.log(options);
+    
     return parseEnvFile(fileContent, options);
 }
 
