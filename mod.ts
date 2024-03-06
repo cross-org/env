@@ -4,7 +4,7 @@
  *                retrieving environment variables across Deno, Bun and Node.js
  */
 
-import { EnvOptions, UnsupportedEnvironmentError, ValidationError, ValidatorFunction } from "./lib/helpers.ts";
+import { EnvOptions, UndefinedEnvironmentError, UnsupportedEnvironmentError, ValidationError, ValidatorFunction } from "./lib/helpers.ts";
 import { deepMerge } from "@cross/deepmerge";
 import { getCurrentRuntime } from "@cross/runtime";
 import { loadEnvFile } from "./lib/filehandler.ts";
@@ -101,6 +101,27 @@ export function getEnv(key: string): string | undefined {
             }
             return undefined;
     }
+}
+
+/**
+ * Gets an environment variable across different supported runtimes and throws
+ * an error if the environment variable is not defined.
+ *
+ * @param {string} key - The name of the environment variable.
+ * @returns {string} The value of the environment variable, or undefined if not found.
+ * @throws {UndefinedEnvironmentError} if the current runtime is unsupported
+ *         and the 'throwErrors' flag is set.
+ * @throws {UnsupportedEnvironmentError} if the current runtime is unsupported
+ *         and the 'throwErrors' flag is set.
+ */
+export function requireEnv(key: string): string {
+    const value = getEnv(key);
+
+    if (!value) {
+        throw new UndefinedEnvironmentError(key);
+    }
+
+    return value;
 }
 
 /**
