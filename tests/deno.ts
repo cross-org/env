@@ -49,7 +49,7 @@ Deno.test({
 Deno.test({
     name: "requireEnv() throws for nonexistant keys",
     fn: () => {
-        assertThrows(() => requireEnv("TEST_KEY_NONEXISTANT"), "TEST_KEY_NONEXISTANT not defined in environment.")
+        assertThrows(() => requireEnv("TEST_KEY_NONEXISTANT"), "TEST_KEY_NONEXISTANT not defined in environment.");
     },
 });
 

@@ -47,6 +47,13 @@ const apiKey = getEnv("API_KEY");
 console.log(`Home directory: ${getEnv("HOME")}`);
 ```
 
+Get variable or throw error if not set.
+
+```javascript
+// Will throw an UndefinedEnvironmentError error if variable is unset.
+const dbUri = requireEnv("DB_URI");
+```
+
 Simple set example.
 
 ```javascript
