@@ -4,6 +4,7 @@ import {
     getAllEnv,
     getEnv,
     hasEnv,
+    requireEnv,
     setEnv,
     setupEnv,
     validateAndGetEnv,
@@ -29,6 +30,26 @@ Deno.test({
     fn: () => {
         const result = getEnv("TEST_KEY_NONEXISTANT");
         assertEquals(result, undefined);
+    },
+});
+
+/** ==== requireEnv() ==== */
+Deno.test({
+    name: "requireEnv() retrieves an existing environment variable",
+    fn() {
+        Deno.env.set("TEST_VARIABLE", "hello");
+
+        const value = requireEnv("TEST_VARIABLE");
+        assertEquals(value, "hello");
+
+        Deno.env.delete("TEST_VARIABLE");
+    },
+});
+
+Deno.test({
+    name: "requireEnv() throws for nonexistant keys",
+    fn: () => {
+        assertThrows(() => requireEnv("TEST_KEY_NONEXISTANT"), "TEST_KEY_NONEXISTANT not defined in environment.")
     },
 });
 

@@ -39,6 +39,15 @@ export class UnsupportedEnvironmentError extends Error {
 }
 
 /**
+ * Error thrown when attempting to retrieve undefined environment variables.
+ */
+export class UndefinedEnvironmentError extends Error {
+    constructor(key: string) {
+        super(`${key} not defined in environment.`);
+    }
+}
+
+/**
  * Error thrown when attempting to validate an environment variable.
  */
 export class ValidationError extends Error {
