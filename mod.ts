@@ -4,14 +4,9 @@
  *                retrieving environment variables across Deno, Bun and Node.js
  */
 
-import {
-    deepMerge,
-    EnvOptions,
-    Runtimes,
-    UnsupportedEnvironmentError,
-    ValidationError,
-    ValidatorFunction,
-} from "./lib/helpers.ts";
+import { EnvOptions, UnsupportedEnvironmentError, ValidationError, ValidatorFunction } from "./lib/helpers.ts";
+import { deepMerge } from "@cross/deepmerge";
+import { getCurrentRuntime } from "@cross/runtime";
 import { loadEnvFile } from "./lib/filehandler.ts";
 export type { EnvOptions, ValidatorFunction } from "./lib/helpers.ts";
 
@@ -30,8 +25,6 @@ declare const Deno: {
 declare const Bun: { env: Record<string, string> };
 //shims Node.js process object
 declare const process: {
-    // deno-lint-ignore no-explicit-any
-    versions: any;
     env: Record<string, string>;
 };
 
@@ -50,21 +43,6 @@ const defaultOptions: EnvOptions = {
 let throwErrors = defaultOptions.throwErrors;
 let logWarnings = defaultOptions.logWarnings;
 
-function getCurrentRuntime(): Runtimes {
-    if (typeof Deno === "object") {
-        return Runtimes.Deno;
-    } else if (typeof Bun === "object") {
-        return Runtimes.Bun;
-    } else if (
-        typeof process === "object" && typeof process.versions !== "undefined" &&
-        typeof process.versions.node !== "undefined"
-    ) {
-        return Runtimes.Node;
-    } else {
-        return Runtimes.Unsupported;
-    }
-}
-
 /**
  * Configures the behavior of the environment variable library.
  *
@@ -82,13 +60,13 @@ export async function setupEnv(options?: EnvOptions) {
             const envVars = await loadEnvFile(currentRuntime, mergedOptions);
 
             switch (currentRuntime) {
-                case Runtimes.Deno:
+                case "deno":
                     Object.entries(envVars).forEach(([key, value]) => Deno.env.set(key, value));
                     break;
-                case Runtimes.Bun:
+                case "bun":
                     Object.entries(envVars).forEach(([key, value]) => Bun.env[key] = value);
                     break;
-                case Runtimes.Node:
+                case "node":
                     Object.entries(envVars).forEach(([key, value]) => process.env[key] = value);
                     break;
             }
@@ -108,11 +86,11 @@ export function getEnv(key: string): string | undefined {
     const currentRuntime = getCurrentRuntime();
 
     switch (currentRuntime) {
-        case Runtimes.Deno:
+        case "deno":
             return Deno.env.get(key);
-        case Runtimes.Bun:
+        case "bun":
             return Bun.env[key];
-        case Runtimes.Node:
+        case "node":
             return process.env[key];
         default:
             if (throwErrors) {
@@ -137,13 +115,13 @@ export function setEnv(key: string, value: string): void {
     const currentRuntime = getCurrentRuntime();
 
     switch (currentRuntime) {
-        case Runtimes.Deno:
+        case "deno":
             Deno.env.set(key, value);
             break;
-        case Runtimes.Bun:
+        case "bun":
             Bun.env[key] = value;
             break;
-        case Runtimes.Node:
+        case "node":
             process.env[key] = value;
             break;
         default:
@@ -169,11 +147,11 @@ export function hasEnv(key: string): boolean {
     const currentRuntime = getCurrentRuntime();
 
     switch (currentRuntime) {
-        case Runtimes.Deno:
+        case "deno":
             return Deno.env.get(key) !== undefined;
-        case Runtimes.Bun:
+        case "bun":
             return key in Bun.env;
-        case Runtimes.Node:
+        case "node":
             return process.env[key] !== undefined;
         default:
             if (throwErrors) {
@@ -201,21 +179,21 @@ export function getAllEnv(prefix?: string): Record<string, string | undefined> {
     const envVars: Record<string, string | undefined> = {};
 
     switch (currentRuntime) {
-        case Runtimes.Deno:
+        case "deno":
             for (const key of Object.keys(Deno.env.toObject())) {
                 if (!prefix || key.startsWith(prefix)) {
                     envVars[key] = Deno.env.get(key);
                 }
             }
             break;
-        case Runtimes.Bun:
+        case "bun":
             for (const key in Bun.env) {
                 if (!prefix || key.startsWith(prefix)) {
                     envVars[key] = Bun.env[key];
                 }
             }
             break;
-        case Runtimes.Node:
+        case "node":
             for (const key in process.env) {
                 if (!prefix || key.startsWith(prefix)) {
                     envVars[key] = process.env[key];

@@ -1,14 +1,4 @@
 /**
- * Enum of supported runtimes.
- */
-export enum Runtimes {
-    Deno = "deno",
-    Bun = "bun",
-    Node = "node",
-    Unsupported = "unsupported",
-}
-
-/**
  * Type alias for a validator function used in environment variable checks.
  */
 export type ValidatorFunction = (value: string) => boolean;
@@ -64,51 +54,4 @@ export class FileReadError extends Error {
     constructor(message: string) {
         super(message);
     }
-}
-
-/**
- * Represents an object designed for deep merging.  Properties can be nested
- * MergeableObjects or values of any type.
- */
-interface MergeableObject {
-    // deno-lint-ignore no-explicit-any
-    [key: string]: MergeableObject | any;
-}
-
-/**
- * Checks if a provided value is a plain JavaScript object (not an array).
- *
- * @param {any} item - The value to check.
- * @returns {boolean} - True if `item` is a plain object, false otherwise.
- */
-// deno-lint-ignore no-explicit-any
-function isObject(item: any): item is Record<string, any> {
-    return item && typeof item === "object" && !Array.isArray(item);
-}
-
-/**
- * Performs a simple but deep merge of multiple MergeableObject instances. Nested properties
- * are recursively merged.
- *
- * @template T - Ensures type consistency between target and source objects.
- * @param {T} target - The target object to merge into.
- * @param {...T[]} sources - One or more source objects to merge.
- * @returns {T} - The modified target object with merged properties.
- */
-export function deepMerge<T extends MergeableObject>(target: T, ...sources: T[]): T {
-    if (!sources.length) return target;
-    const source = sources.shift();
-
-    if (isObject(target) && isObject(source)) {
-        for (const key in source) {
-            if (isObject(source[key])) {
-                if (!target[key]) Object.assign(target, { [key]: {} });
-                deepMerge(target[key] as MergeableObject, source[key] as MergeableObject);
-            } else {
-                Object.assign(target, { [key]: source[key] });
-            }
-        }
-    }
-
-    return deepMerge(target, ...sources);
 }

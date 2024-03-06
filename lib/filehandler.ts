@@ -1,4 +1,4 @@
-import { EnvOptions, FileReadError, Runtimes, UnsupportedEnvironmentError } from "./helpers.ts";
+import { EnvOptions, FileReadError, UnsupportedEnvironmentError } from "./helpers.ts";
 
 //Simulates/shims the Deno runtime for development purposes.
 declare const Deno: {
@@ -14,12 +14,6 @@ declare const Bun: {
     file(filePath: string): { text(): string };
     env: Record<string, string>;
 };
-//shims Node.js process object
-declare const process: {
-    // deno-lint-ignore no-explicit-any
-    versions: any;
-    env: Record<string, string>;
-};
 
 /**
  * Loads environment variables from a .env file, handling file existence,
@@ -32,7 +26,7 @@ declare const process: {
  * @throws {FileReadError} If there's an error reading the .env file and the 'throwErrors' flag is set.
  */
 export async function loadEnvFile(
-    currentRuntime: Runtimes,
+    currentRuntime: string,
     options: EnvOptions,
 ): Promise<Record<string, string>> {
     const filePath = options.dotEnv?.path ? options.dotEnv.path : ".env";
@@ -40,13 +34,13 @@ export async function loadEnvFile(
 
     try {
         switch (currentRuntime) {
-            case Runtimes.Deno:
+            case "deno":
                 fileContent = Deno.readTextFileSync(filePath);
                 break;
-            case Runtimes.Bun:
+            case "bun":
                 fileContent = await Bun.file(filePath).text();
                 break;
-            case Runtimes.Node: {
+            case "node": {
                 const fs = await import("node:fs");
                 fileContent = fs.readFileSync(filePath, "utf-8");
                 break;
@@ -70,7 +64,7 @@ export async function loadEnvFile(
             console.warn(err.message);
         }
     }
-    
+
     return parseEnvFile(fileContent, options);
 }
 

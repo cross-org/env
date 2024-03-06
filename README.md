@@ -130,10 +130,10 @@ await setupEnv({
 MYAPP_DATABASE_HOST=my-database-server
 MYAPP_DATABASE_URL=jdbc:mysql://$MYAPP_DATABASE_HOST:3306/my_schema
 MYAPP_APP_CONFIG_PATH="config/$MYAPP_DATABASE_URL.properties"
-MYAPP_WEB_SERVER_URL=https://$MYAPP_APP_CONFIG_PATH/app 
+MYAPP_WEB_SERVER_URL=https://$MYAPP_APP_CONFIG_PATH/app
 ```
-Example code to read above `.env-local`-file and console.logging all environmental variables
-prefixed with `MYAPP_`
+
+Example code to read above `.env-local`-file and console.logging all environmental variables prefixed with `MYAPP_`
 
 ```javascript
 import { getAllEnv, setupEnv } from "@cross/env";
