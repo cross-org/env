@@ -1,4 +1,5 @@
 import { EnvOptions, FileReadError, UnsupportedEnvironmentError } from "./helpers.ts";
+import { readFile } from "node:fs/promises";
 
 //Simulates/shims the Deno runtime for development purposes.
 declare const Deno: {
@@ -35,14 +36,9 @@ export async function loadEnvFile(
     try {
         switch (currentRuntime) {
             case "deno":
-                fileContent = Deno.readTextFileSync(filePath);
-                break;
             case "bun":
-                fileContent = await Bun.file(filePath).text();
-                break;
             case "node": {
-                const fs = await import("node:fs");
-                fileContent = fs.readFileSync(filePath, "utf-8");
+                fileContent = await readFile(filePath, "utf-8");
                 break;
             }
             default:

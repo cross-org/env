@@ -2,3 +2,7 @@
 .env-local
 .vscode
 test.ts
+package.json
+package-lock.json
+deno.lock
+node_modules
