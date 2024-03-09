@@ -4,7 +4,7 @@
     "exports": "./mod.ts",
 
     "tasks": {
-        "test": "deno test --allow-env --allow-read ./tests/deno.ts",
+        "test": "cd tests && deno test --allow-env --allow-read",
         "publish": "deno publish --config jsr.jsonc",
         "publish-dry": "deno publish --dry-run --config jsr.jsonc"
     },
