@@ -1,21 +1,6 @@
 import { EnvOptions, FileReadError, UnsupportedEnvironmentError } from "./helpers.ts";
 import { readFile } from "node:fs/promises";
 
-//Simulates/shims the Deno runtime for development purposes.
-declare const Deno: {
-    readTextFileSync(filePath: string): string;
-    env: {
-        get(key: string): string | undefined;
-        set(key: string, value: string): void;
-        toObject(): Record<string, string | undefined>;
-    };
-};
-//Simulates/shims the Bun runtime for development purposes.
-declare const Bun: {
-    file(filePath: string): { text(): string };
-    env: Record<string, string>;
-};
-
 /**
  * Loads environment variables from a .env file, handling file existence,
  * runtime differences, and errors.

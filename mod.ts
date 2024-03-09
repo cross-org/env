@@ -19,14 +19,6 @@ export type { EnvOptions, ValidatorFunction } from "./lib/helpers.ts";
 /**
  * Various shims/type-stubs, declared for development/IDE purposes
  */
-//shims the Deno runtime
-declare const Deno: {
-    env: {
-        get(key: string): string | undefined;
-        set(key: string, value: string): void;
-        toObject(): Record<string, string | undefined>;
-    };
-};
 //shims the Bun runtime
 declare const Bun: { env: Record<string, string> };
 //shims Node.js process object
