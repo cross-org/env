@@ -1,6 +1,6 @@
 {
     "name": "@cross/env",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "exports": "./mod.ts",
 
     "tasks": {
@@ -14,7 +14,9 @@
         "indentWidth": 4
     },
     "imports": {
-        "@cross/deepmerge": "jsr:@cross/deepmerge@^0.1.0",
-        "@cross/runtime": "jsr:@cross/runtime@^0.0.10"
+        "@cross/deepmerge": "jsr:@cross/deepmerge@^0.1.1",
+        "@cross/runtime": "jsr:@cross/runtime@^0.0.17",
+        "@cross/test": "jsr:@cross/test@^0.0.8",
+        "@std/assert": "jsr:@std/assert@^0.219.1"
     }
 }

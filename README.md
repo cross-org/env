@@ -1,7 +1,7 @@
 ## Cross-runtime environment variable management for Deno, Bun, and Node.js
 
-[![JSR Version](https://jsr.io/badges/@cross/env)](https://jsr.io/@cross/env)
-[![JSR Score](https://jsr.io/badges/@cross/env/score)](https://jsr.io/@cross/env/score)
+[![JSR Version](https://jsr.io/badges/@cross/env?v=0.2.4)](https://jsr.io/@cross/env)
+[![JSR Score](https://jsr.io/badges/@cross/env/score?v=0.2.4)](https://jsr.io/@cross/env/score)
 
 This library provides a consistent and simple interface for managing environment variables across multiple runtimes,
 making it ideal for cross-platform development.
