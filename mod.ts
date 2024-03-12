@@ -53,9 +53,10 @@ export async function setupEnv(options?: EnvOptions) {
         throwErrors = mergedOptions.throwErrors!;
         logWarnings = mergedOptions.logWarnings!;
 
-        if (mergedOptions.dotEnv) {
+        if (mergedOptions.dotEnv?.enabled) {
+            const failSilentlyOnError = options.dotEnv?.enabled ? false : true;
             const currentRuntime = getCurrentRuntime();
-            const envVars = await loadEnvFile(currentRuntime, mergedOptions);
+            const envVars = await loadEnvFile(currentRuntime, mergedOptions, failSilentlyOnError);
 
             switch (currentRuntime) {
                 case "deno":
