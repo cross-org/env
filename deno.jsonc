@@ -1,12 +1,11 @@
 {
     "name": "@cross/env",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "exports": "./mod.ts",
 
     "tasks": {
         "test": "cd tests && deno test --allow-env --allow-read",
-        "publish": "deno publish --config jsr.jsonc",
-        "publish-dry": "deno publish --dry-run --config jsr.jsonc"
+        "publish-dry": "deno publish --dry-run"
     },
     "lock": false,
     "fmt": {
