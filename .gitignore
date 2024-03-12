@@ -5,3 +5,5 @@ package.json
 package-lock.json
 deno.lock
 node_modules
+bun.lockb
+bunfig.toml
