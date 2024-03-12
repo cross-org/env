@@ -1,4 +1,4 @@
-import { assert, assertEquals, assertThrows } from "https://deno.land/std@0.218.2/assert/mod.ts";
+import { assert, assertEquals, assertThrows } from "@std/assert";
 import { ValidationError } from "../lib/helpers.ts";
 import {
     getAllEnv,
@@ -88,7 +88,6 @@ const isValidPort: ValidatorFunction = (value: string): boolean => /^\d+$/.test(
 test("validateEnv() returns true for valid values", () => {
     setEnv("TEST_VALUE_2", "1234"); // Valid as per isValidPort
     assert(validateEnv("TEST_VALUE_2", isValidPort));
-    Deno.env.delete("TEST_VALUE_2");
 });
 
 test("validateEnv() false for nonexistant keys", () => {
