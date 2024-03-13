@@ -11,7 +11,7 @@ import {
     ValidationError,
     ValidatorFunction,
 } from "./lib/helpers.ts";
-import { deepMerge } from "@cross/deepmerge";
+import { simpleMerge } from "@cross/deepmerge";
 import { getCurrentRuntime } from "@cross/runtime";
 import { loadEnvFile } from "./lib/filehandler.ts";
 export type { EnvOptions, ValidatorFunction } from "./lib/helpers.ts";
@@ -48,7 +48,7 @@ let logWarnings = defaultOptions.logWarnings;
  */
 export async function setupEnv(options?: EnvOptions) {
     if (options) {
-        const mergedOptions = deepMerge({}, defaultOptions, options);
+        const mergedOptions = simpleMerge({}, defaultOptions, options);
 
         throwErrors = mergedOptions.throwErrors!;
         logWarnings = mergedOptions.logWarnings!;
