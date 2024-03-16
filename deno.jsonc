@@ -1,7 +1,10 @@
 {
     "name": "@cross/env",
-    "version": "0.2.6",
-    "exports": "./mod.ts",
+    "version": "0.2.7",
+    "exports": {
+        ".": "./mod.ts",
+        "./load": "./load.ts"
+    },
 
     "tasks": {
         "test": "cd tests && deno test --allow-env --allow-read",

@@ -109,7 +109,7 @@ To automatically load environment variables at the start of the application. Thi
 customizable in the main setup function setupEnv() instead if different behavior is desired.
 
 ```javascript
-import "@cross/env/load.ts";
+import "@cross/env/load";
 ```
 
 ## Configuration (optional)
