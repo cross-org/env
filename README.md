@@ -13,7 +13,8 @@ making it ideal for cross-platform development.
   multiple runtimes.
 - **Validation:** Ensures environment variables are valid before usage.
 - **Error handling:** Provides clear error messages for unsupported runtimes or validation failures.
-- **Optional environmental file loading:** Supports loading variables from custom .env files _(experimental)_
+- **Optional environmental file loading:** Supports loading variables from custom .env(or other filename if supplied)
+  files.
 
 ## Installation
 
@@ -104,6 +105,13 @@ function isPositiveNumber(value: string): boolean {
 const timeout = validateAndGetEnv("TIMEOUT", isPositiveNumber);
 ```
 
+To automatically load environment variables at the start of the application. This only works for .env-files but is
+customizable in the main setup function setupEnv() instead if different behavior is desired.
+
+```javascript
+import "@cross/env/load.ts";
+```
+
 ## Configuration (optional)
 
 For more advanced use cases you can configure the behaviour of the library. The library defaults to showing console
@@ -114,7 +122,7 @@ await setupEnv({
     throwErrors: true,
     logWarnings: false,
     dotEnv: {
-        enabled: true,
+        enabled: false,
         path: ".env.local",
         allowQuotes: true,
         enableExpansion: true,
