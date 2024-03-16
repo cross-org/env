@@ -30,7 +30,7 @@ const defaultOptions: EnvOptions = {
     throwErrors: false, // Errors are not thrown by default
     logWarnings: true, // Warnings are logged to the console by default
     dotEnv: {
-        enabled: true, // .env file loading enabled by default
+        enabled: false, // .env file loading disabled by default
         path: ".env", // Standard .env file location
         allowQuotes: true, // Allow quotes by default
         enableExpansion: true, // Enable variable expansion by default
@@ -47,28 +47,25 @@ let logWarnings = defaultOptions.logWarnings;
  * @param {EnvOptions} options - setup options.
  */
 export async function setupEnv(options?: EnvOptions) {
-    if (options) {
-        const mergedOptions = simpleMerge({}, defaultOptions, options);
+    const mergedOptions = simpleMerge(defaultOptions, options || {});
 
-        throwErrors = mergedOptions.throwErrors!;
-        logWarnings = mergedOptions.logWarnings!;
+    throwErrors = mergedOptions?.throwErrors || defaultOptions.throwErrors;
+    logWarnings = mergedOptions?.logWarnings || defaultOptions.logWarnings;
 
-        if (mergedOptions.dotEnv?.enabled) {
-            const failSilentlyOnError = options.dotEnv?.enabled ? false : true;
-            const currentRuntime = getCurrentRuntime();
-            const envVars = await loadEnvFile(currentRuntime, mergedOptions, failSilentlyOnError);
+    if (mergedOptions?.dotEnv?.enabled) {
+        const currentRuntime = getCurrentRuntime();
+        const envVars = await loadEnvFile(currentRuntime, mergedOptions);
 
-            switch (currentRuntime) {
-                case "deno":
-                    Object.entries(envVars).forEach(([key, value]) => Deno.env.set(key, value));
-                    break;
-                case "bun":
-                    Object.entries(envVars).forEach(([key, value]) => Bun.env[key] = value);
-                    break;
-                case "node":
-                    Object.entries(envVars).forEach(([key, value]) => process.env[key] = value);
-                    break;
-            }
+        switch (currentRuntime) {
+            case "deno":
+                Object.entries(envVars).forEach(([key, value]) => Deno.env.set(key, value));
+                break;
+            case "bun":
+                Object.entries(envVars).forEach(([key, value]) => Bun.env[key] = value);
+                break;
+            case "node":
+                Object.entries(envVars).forEach(([key, value]) => process.env[key] = value);
+                break;
         }
     }
 }

@@ -7,7 +7,6 @@ import { readFile } from "node:fs/promises";
  *
  * @param {Runtimes} currentRuntime -  The current runtime environment.
  * @param {EnvOptions} options - setup options.
- * @param {boolean} failSilentlyOnError - supress errors and warnings while reading file.
  * @returns {Record<string, string>} A object of parsed environment variables.
  * @throws {UnsupportedEnvironmentError} If the runtime is unsupported and the 'throwErrors' flag is set.
  * @throws {FileReadError} If there's an error reading the .env file and the 'throwErrors' flag is set.
@@ -15,7 +14,6 @@ import { readFile } from "node:fs/promises";
 export async function loadEnvFile(
     currentRuntime: string,
     options: EnvOptions,
-    failSilentlyOnError: boolean,
 ): Promise<Record<string, string>> {
     const filePath = options.dotEnv?.path ? options.dotEnv.path : ".env";
     let fileContent = "";
@@ -40,13 +38,11 @@ export async function loadEnvFile(
                 break;
         }
     } catch (err) {
-        if (!failSilentlyOnError) {
-            if (options.throwErrors) {
-                throw new FileReadError(err.message);
-            }
-            if (options.logWarnings) {
-                console.warn(err.message);
-            }
+        if (options.throwErrors) {
+            throw new FileReadError(err.message);
+        }
+        if (options.logWarnings) {
+            console.warn(err.message);
         }
     }
 
