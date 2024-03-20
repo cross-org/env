@@ -1,9 +1,11 @@
+# .github/workflows/deno.yml
 name: Deno CI
 
 on: [push, pull_request]
 
 jobs:
   test:
+    name: Deno Test
     runs-on: ubuntu-latest
 
     steps:
