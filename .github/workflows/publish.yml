@@ -1,16 +1,15 @@
 # .github/workflows/publish.yml
-
 name: Publish to JSR
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["CI Tests"]  
+    types: 
+      - completed
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       id-token: write 

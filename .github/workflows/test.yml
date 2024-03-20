@@ -1,0 +1,24 @@
+# .github/workflows/test.yml
+name: CI Tests
+
+on: 
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deno_ci:
+    uses: cross-org/workflows/.github/workflows/deno-ci.yml@main
+    with:
+      entrypoint: mod.ts
+  bun_ci:
+    uses: cross-org/workflows/.github/workflows/bun-ci.yml@main
+    with:
+      jsr_dependencies: "@cross/deepmerge @cross/runtime @cross/test @std/assert"
+  node_ci:
+    uses: cross-org/workflows/.github/workflows/node-ci.yml@main
+    with:
+      jsr_dependencies: "@cross/deepmerge @cross/runtime @cross/test @std/assert"
+      test_target: "tests/*.test.ts"
