@@ -5,7 +5,6 @@ on: [push, pull_request]
 
 jobs:
   test:
-    name: Bun Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
