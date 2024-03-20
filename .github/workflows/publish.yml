@@ -3,9 +3,10 @@
 name: Publish to JSR
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Bun CI", "Deno CI", "Node.js CI"]  
+    types: 
+      - completed
 
 jobs:
   publish:
