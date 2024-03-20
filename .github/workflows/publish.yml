@@ -1,10 +1,9 @@
 # .github/workflows/publish.yml
-
 name: Publish to JSR
 
 on:
   workflow_run:
-    workflows: ["Bun CI", "Deno CI", "Node.js CI"]  
+    workflows: ["CI Tests"]  
     types: 
       - completed
 
