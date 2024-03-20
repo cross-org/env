@@ -16,8 +16,9 @@ jobs:
   bun_ci:
     uses: cross-org/workflows/.github/workflows/bun-ci.yml@main
     with:
-      jsr_dependencies: "@cross/test @std/assert"
+      jsr_dependencies: "@cross/deepmerge @cross/runtime @cross/test @std/assert"
   node_ci:
     uses: cross-org/workflows/.github/workflows/node-ci.yml@main
     with:
-      jsr_dependencies: "@cross/test @std/assert"
+      jsr_dependencies: "@cross/deepmerge @cross/runtime @cross/test @std/assert"
+      test_target: "tests/*.test.ts"
