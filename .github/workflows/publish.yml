@@ -1,21 +1,13 @@
 # .github/workflows/publish.yml
-name: Publish to JSR
-
+name: Publish to jsr.io
 on:
-  workflow_run:
-    workflows: ["CI Tests"]  
-    types: 
-      - completed
+  release:
+    types: [released]
+  workflow_dispatch:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write 
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Publish package
-        run: npx jsr publish
+      id-token: write
+    uses: cross-org/workflows/.github/workflows/jsr-publish.yml@main
