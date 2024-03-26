@@ -4,8 +4,8 @@
 [![JSR Score](https://jsr.io/badges/@cross/env/score?v=0.2.4)](https://jsr.io/@cross/env/score)
 
 This library provides a consistent and simple interface for managing environment variables across multiple runtimes,
-making it ideal for cross-platform development. 
-Part of the @cross suite - check out our growing collection of cross-runtime tools at [github.com/cross-org](https://github.com/cross-org).
+making it ideal for cross-platform development. Part of the @cross suite - check out our growing collection of
+cross-runtime tools at [github.com/cross-org](https://github.com/cross-org).
 
 ## Features
 

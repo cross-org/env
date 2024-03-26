@@ -5,9 +5,10 @@
         ".": "./mod.ts",
         "./load": "./load.ts"
     },
-
     "tasks": {
+        "check": "deno fmt --check && deno lint && deno check mod.ts && deno doc --lint mod.ts && deno task test && deno task check-deps --slim",
         "test": "deno test --allow-env --allow-read",
+        "check-deps": "deno run -A jsr:@check/deps --ignore-unused",
         "publish-dry": "deno publish --dry-run"
     },
     "lock": false,
@@ -15,10 +16,13 @@
         "lineWidth": 120,
         "indentWidth": 4
     },
+    "publish": {
+        "exclude": [".github", "*.test.ts"]
+    },
     "imports": {
         "@cross/deepmerge": "jsr:@cross/deepmerge@^1.0.0",
         "@cross/runtime": "jsr:@cross/runtime@^1.0.0",
-        "@cross/test": "jsr:@cross/test@^0.0.8",
-        "@std/assert": "jsr:@std/assert@^0.219.1"
+        "@cross/test": "jsr:@cross/test@^0.0.9",
+        "@std/assert": "jsr:@std/assert@^0.220.1"
     }
 }
