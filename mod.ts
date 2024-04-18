@@ -4,13 +4,8 @@
  *                retrieving environment variables across Deno, Bun and Node.js
  */
 
-import {
-    EnvOptions,
-    UndefinedEnvironmentError,
-    UnsupportedEnvironmentError,
-    ValidationError,
-    ValidatorFunction,
-} from "./lib/helpers.ts";
+import { UndefinedEnvironmentError, UnsupportedEnvironmentError, ValidationError } from "./lib/helpers.ts";
+import type { EnvOptions, ValidatorFunction } from "./lib/helpers.ts";
 import { simpleMerge } from "@cross/deepmerge";
 import { getCurrentRuntime } from "@cross/runtime";
 import { loadEnvFile } from "./lib/filehandler.ts";

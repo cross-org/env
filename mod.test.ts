@@ -1,16 +1,7 @@
 import { assert, assertEquals, assertThrows } from "@std/assert";
 import { ValidationError } from "./lib/helpers.ts";
-import {
-    getAllEnv,
-    getEnv,
-    hasEnv,
-    requireEnv,
-    setEnv,
-    setupEnv,
-    validateAndGetEnv,
-    validateEnv,
-    ValidatorFunction,
-} from "./mod.ts";
+import { getAllEnv, getEnv, hasEnv, requireEnv, setEnv, setupEnv, validateAndGetEnv, validateEnv } from "./mod.ts";
+import type { ValidatorFunction } from "./mod.ts";
 import { test } from "@cross/test";
 
 /** ==== getEnv() ==== */

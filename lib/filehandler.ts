@@ -1,4 +1,5 @@
-import { EnvOptions, FileReadError, UnsupportedEnvironmentError } from "./helpers.ts";
+import { FileReadError, UnsupportedEnvironmentError } from "./helpers.ts";
+import type { EnvOptions } from "./helpers.ts";
 import { readFile } from "node:fs/promises";
 
 /**
