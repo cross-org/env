@@ -198,7 +198,7 @@ export function getAllEnv(prefix?: string): Record<string, string | undefined> {
     switch (currentRuntime) {
         case "deno":
             for (const key of Object.keys(Deno.env.toObject())) {
-                if (!prefix || key.startsWith(prefix)) {
+                if (!key.startsWith("=") && (!prefix || key.startsWith(prefix))) {
                     envVars[key] = Deno.env.get(key);
                 }
             }
