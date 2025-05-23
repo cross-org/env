@@ -38,12 +38,16 @@ export async function loadEnvFile(
                 }
                 break;
         }
-    } catch (err) {
-        if (options.throwErrors) {
-            throw new FileReadError(err.message);
-        }
-        if (options.logWarnings) {
-            console.warn(err.message);
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            if (options.throwErrors) {
+                throw new FileReadError(err.message);
+            }
+            if (options.logWarnings) {
+                console.warn(err.message);
+            }
+        } else {
+            console.error("An unexpected error occurred:", err);
         }
     }
 
@@ -101,9 +105,9 @@ function processEscapes(value: string): string {
  * @returns {Record<string, string>} A object of parsed environment variables.
  */
 function parseEnvFile(content: string, options: EnvOptions): Record<string, string> {
-    const envVars: Record<string, string> = {};
-    const allowQuotes = options.dotEnv?.allowQuotes ? options.dotEnv.allowQuotes : undefined;
-    const enableExpansion = options.dotEnv?.enableExpansion ? options.dotEnv.enableExpansion : undefined;
+    const envVars: Record<string, string> = Object.create(null);
+    const allowQuotes = options.dotEnv?.allowQuotes ?? true;
+    const enableExpansion = options.dotEnv?.enableExpansion ?? true;
 
     if (content.length > 0) {
         content.split("\n").forEach((line) => {
