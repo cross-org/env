@@ -233,7 +233,10 @@ export function getAllEnv(prefix?: string): Record<string, string | undefined> {
  *                    indicating whether the value is valid.
  * @returns {boolean} True if the environment variable exists and passes validation, false otherwise.
  */
-export function validateEnv(key: string, validator: ValidatorFunction): boolean {
+export function validateEnv(
+    key: string,
+    validator: ValidatorFunction,
+): boolean {
     const value = getEnv(key);
 
     if (value !== undefined && validator(value)) {
@@ -253,7 +256,10 @@ export function validateEnv(key: string, validator: ValidatorFunction): boolean 
  * @returns The value of the environment variable if it exists and is valid.
  * @throws ValidationError if the environment variable is found but fails validation.
  */
-export function validateAndGetEnv(key: string, validator: ValidatorFunction): string | undefined {
+export function validateAndGetEnv(
+    key: string,
+    validator: ValidatorFunction,
+): string | undefined {
     const value = getEnv(key) || undefined;
 
     if (value && !validator(value)) {
