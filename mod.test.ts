@@ -155,3 +155,10 @@ test("setupEnv() respects logWarnings: false", async () => {
         await setupEnv();
     }
 });
+
+/** ==== inherited object properties ==== */
+test("getEnv() and hasEnv() ignore inherited object properties", () => {
+    assertEquals(getEnv("toString"), undefined);
+    assertEquals(hasEnv("toString"), false);
+    assertEquals(hasEnv("__proto__"), false);
+});

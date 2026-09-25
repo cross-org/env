@@ -80,9 +80,9 @@ export function getEnv(key: string): string | undefined {
         case "deno":
             return Deno.env.get(key);
         case "bun":
-            return Bun.env[key];
+            return Object.hasOwn(Bun.env, key) ? Bun.env[key] : undefined;
         case "node":
-            return process.env[key];
+            return Object.hasOwn(process.env, key) ? process.env[key] : undefined;
         default:
             if (throwErrors) {
                 throw new UnsupportedEnvironmentError();
@@ -99,9 +99,8 @@ export function getEnv(key: string): string | undefined {
  * an error if the environment variable is not defined.
  *
  * @param {string} key - The name of the environment variable.
- * @returns {string} The value of the environment variable, or undefined if not found.
- * @throws {UndefinedEnvironmentError} if the current runtime is unsupported
- *         and the 'throwErrors' flag is set.
+ * @returns {string} The value of the environment variable.
+ * @throws {UndefinedEnvironmentError} if the environment variable is not defined.
  * @throws {UnsupportedEnvironmentError} if the current runtime is unsupported
  *         and the 'throwErrors' flag is set.
  */
@@ -193,9 +192,9 @@ export function hasEnv(key: string): boolean {
         case "deno":
             return Deno.env.get(key) !== undefined;
         case "bun":
-            return key in Bun.env;
+            return Object.hasOwn(Bun.env, key);
         case "node":
-            return process.env[key] !== undefined;
+            return Object.hasOwn(process.env, key);
         default:
             if (throwErrors) {
                 throw new UnsupportedEnvironmentError();
