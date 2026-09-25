@@ -1,6 +1,16 @@
 import { assert, assertEquals, assertThrows } from "@std/assert";
 import { ValidationError } from "./lib/helpers.ts";
-import { getAllEnv, getEnv, hasEnv, requireEnv, setEnv, setupEnv, validateAndGetEnv, validateEnv } from "./mod.ts";
+import {
+    deleteEnv,
+    getAllEnv,
+    getEnv,
+    hasEnv,
+    requireEnv,
+    setEnv,
+    setupEnv,
+    validateAndGetEnv,
+    validateEnv,
+} from "./mod.ts";
 import type { ValidatorFunction } from "./mod.ts";
 import { test } from "@cross/test";
 
@@ -73,6 +83,23 @@ test("hasEnv() returns true for an existing environment variable", () => {
 
 test("hasEnv() returns false for a non-existent environment variable", () => {
     const key = "NON_EXISTENT_VARIABLE";
+    assertEquals(hasEnv(key), false);
+});
+
+/** ==== deleteEnv() ==== */
+test("deleteEnv() removes an existing environment variable", () => {
+    const key = "TEST_VARIABLE_DELETE";
+    setEnv(key, "value");
+    assert(hasEnv(key));
+
+    deleteEnv(key);
+    assertEquals(hasEnv(key), false);
+    assertEquals(getEnv(key), undefined);
+});
+
+test("deleteEnv() is a no-op for a non-existent environment variable", () => {
+    const key = "NON_EXISTENT_VARIABLE_DELETE";
+    deleteEnv(key);
     assertEquals(hasEnv(key), false);
 });
 

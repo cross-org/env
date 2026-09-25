@@ -147,6 +147,37 @@ export function setEnv(key: string, value: string): void {
 }
 
 /**
+ * Delete an environment variable in supported runtimes. Deleting a variable
+ * that does not exist is a no-op.
+ *
+ * @param {string} key - The name of the environment variable.
+ * @throws {UnsupportedEnvironmentError} if the current runtime is unsupported
+ *         and the 'throwErrors' flag is set.
+ */
+export function deleteEnv(key: string): void {
+    const currentRuntime = getCurrentRuntime();
+
+    switch (currentRuntime) {
+        case "deno":
+            Deno.env.delete(key);
+            break;
+        case "bun":
+            delete Bun.env[key];
+            break;
+        case "node":
+            delete process.env[key];
+            break;
+        default:
+            if (throwErrors) {
+                throw new UnsupportedEnvironmentError();
+            }
+            if (logWarnings) {
+                console.warn("Unsupported runtime");
+            }
+    }
+}
+
+/**
  * Checks if an environment variable with the given key exists in the
  * current runtime
  *

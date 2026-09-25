@@ -63,6 +63,12 @@ setEnv("ENVIRONMENT", "development");
 setEnv("THE_COLOUR", "red");
 ```
 
+Deleting a variable.
+
+```javascript
+deleteEnv("THE_COLOUR");
+```
+
 Checking if a variable exists.
 
 ```javascript
