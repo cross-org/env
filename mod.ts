@@ -44,8 +44,8 @@ let logWarnings = defaultOptions.logWarnings;
 export async function setupEnv(options?: EnvOptions) {
     const mergedOptions = simpleMerge(defaultOptions, options || {});
 
-    throwErrors = mergedOptions?.throwErrors || defaultOptions.throwErrors;
-    logWarnings = mergedOptions?.logWarnings || defaultOptions.logWarnings;
+    throwErrors = mergedOptions?.throwErrors ?? defaultOptions.throwErrors;
+    logWarnings = mergedOptions?.logWarnings ?? defaultOptions.logWarnings;
 
     if (mergedOptions?.dotEnv?.enabled) {
         const currentRuntime = getCurrentRuntime();

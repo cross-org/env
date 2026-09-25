@@ -55,45 +55,28 @@ export async function loadEnvFile(
 }
 
 /**
- * Recursively expands environment variables within a given string.
- * Handles nested variable references and prevents infinite loops
- * caused by circular dependencies.
- *
- * @param {string} value - The string containing potential environment variable references.
- * @param {Record<string, string>} envVars - An object containing the known environment variables.
- * @param {Set<string>} [visited=new Set()] - A set used internally to track visited values for circular reference detection.
- * @returns {string} The string with all environment variables expanded.
- * @throws {Error} If a circular reference is detected.
+ * Matches `$NAME` references, optionally preceded by a backslash escape.
+ * Names are matched greedily, so `$FOOBAR` never matches a variable named `FOO`.
  */
-function expandValue(value: string, envVars: Record<string, string>, visited: Set<string> = new Set()): string {
-    if (visited.has(value)) {
-        throw new Error("Circular reference detected in variable expansion");
-    }
-
-    visited.add(value);
-
-    const keys = Object.keys(envVars);
-    for (const key of keys) {
-        const regex = new RegExp(`(?<!\\\\)\\$${key}(?<!\\\\)`, "g");
-        if (value.match(regex)) {
-            const expandedInner = expandValue(envVars[key], envVars, visited);
-            value = value.replace(regex, expandedInner);
-        }
-    }
-
-    visited.delete(value);
-    return value;
-}
+const VARIABLE_REFERENCE = /(\\?)\$([A-Za-z_][A-Za-z0-9_]*)/g;
 
 /**
- * Removes escape characters (backslashes) from literal dollar signs within a string.
- * This is typically used in conjunction with environment variable parsing.
+ * Expands `$NAME` references in a value using variables defined earlier in
+ * the file. Stored values are already expanded, so a single pass is enough.
+ * `\$NAME` produces a literal `$NAME`, and references to unknown variables
+ * are left untouched.
  *
- * @param {string} value - The string potentially containing escaped dollar signs.
- * @returns {string} The string with escapes removed from literal dollar signs ($).
+ * @param {string} value - The string containing potential environment variable references.
+ * @param {Record<string, string>} envVars - An object containing the previously parsed environment variables.
+ * @returns {string} The string with all known environment variables expanded.
  */
-function processEscapes(value: string): string {
-    return value.replace(/\\\\(\$)/g, "$1");
+function expandValue(value: string, envVars: Record<string, string>): string {
+    return value.replace(VARIABLE_REFERENCE, (match, escape: string, name: string) => {
+        if (escape) {
+            return `$${name}`;
+        }
+        return name in envVars ? envVars[name] : match;
+    });
 }
 
 /**
@@ -104,7 +87,7 @@ function processEscapes(value: string): string {
  * @param {EnvOptions} options - setup options.
  * @returns {Record<string, string>} A object of parsed environment variables.
  */
-function parseEnvFile(content: string, options: EnvOptions): Record<string, string> {
+export function parseEnvFile(content: string, options: EnvOptions): Record<string, string> {
     const envVars: Record<string, string> = Object.create(null);
     const allowQuotes = options.dotEnv?.allowQuotes ?? true;
     const enableExpansion = options.dotEnv?.enableExpansion ?? true;
@@ -130,7 +113,6 @@ function parseEnvFile(content: string, options: EnvOptions): Record<string, stri
             }
 
             if (enableExpansion) {
-                value = processEscapes(value);
                 envVars[key.trim()] = expandValue(value, envVars);
             } else {
                 envVars[key.trim()] = value;

@@ -138,3 +138,20 @@ test("validateAndGetEnv() throws for invalid values", () => {
     //it should throw an error:
     assertThrows(() => validateAndGetEnv("PORT", isValidPort), ValidationError);
 });
+
+/** ==== setupEnv() ==== */
+test("setupEnv() respects logWarnings: false", async () => {
+    setEnv("TEST_PORT_QUIET", "http"); // Invalid as per isValidPort
+
+    const originalWarn = console.warn;
+    const warnings: unknown[] = [];
+    console.warn = (...args: unknown[]) => warnings.push(args);
+    try {
+        await setupEnv({ logWarnings: false });
+        assertEquals(validateAndGetEnv("TEST_PORT_QUIET", isValidPort), undefined);
+        assertEquals(warnings.length, 0);
+    } finally {
+        console.warn = originalWarn;
+        await setupEnv();
+    }
+});
